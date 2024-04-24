@@ -1,0 +1,65 @@
+{
+  "name": "link-button",
+  "version": "1.0.0",
+  "description": "Adds a button to the UI that links to a URL with template strings for position parameters",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "prepublishOnly": "vcmplugin build",
+    "build": "vcmplugin build",
+    "bundle": "vcmplugin bundle",
+    "start": "vcmplugin serve",
+    "preview": "vcmplugin preview",
+    "buildStagingApp": "vcmplugin buildStagingApp",
+    "lint:js": "eslint . --ext .vue,.js,.cjs,.mjs,.ts,.cts,.mts",
+    "lint:prettier": "prettier --check .",
+    "lint": "npm run lint:js && npm run lint:prettier",
+    "format": "prettier --write --list-different . && npm run lint:js -- --fix",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "type-check": "vue-tsc --noEmit",
+    "ensure-types": "vcmplugin ensure-types"
+  },
+  "author": "Tobias Krauth <tkrauth@vc.systems>",
+  "license": "MIT",
+  "keywords": [
+    "vcmap",
+    "plugin"
+  ],
+  "files": [
+    "src/",
+    "dist/",
+    "plugin-assets/",
+    "LICENSE.md",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": "dist/index.js",
+    "./dist": "./dist/index.js"
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "dist",
+    "plugin-assets"
+  ],
+  "prettier": "@vcsuite/eslint-config/prettier.js",
+  "peerDependencies": {
+    "@vcmap/core": "^5.2.0",
+    "@vcmap/ui": "^5.2.0",
+    "vue": "~2.7.3",
+    "vuetify": "~2.6.7"
+  },
+  "devDependencies": {
+    "@vcmap/plugin-cli": "^3.1.1",
+    "@vcsuite/eslint-config": "^3.0.7",
+    "@vitest/coverage-v8": "^1.5.1",
+    "jest-canvas-mock": "^2.5.2",
+    "jsdom": "^24.0.0",
+    "resize-observer-polyfill": "^1.5.1",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.1",
+    "vue-tsc": "^2.0.14"
+  },
+  "mapVersion": "^5.2"
+}
