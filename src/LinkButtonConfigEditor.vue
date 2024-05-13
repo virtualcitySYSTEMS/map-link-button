@@ -75,9 +75,10 @@
         .getConfig()
         .then((config: LinkButtonConfig) => {
           localConfig.value = {
-            buttons: config.buttons?.map((buttonOptions) => {
-              return { ...defaultOptions, ...buttonOptions };
-            }),
+            buttons:
+              config.buttons?.map((buttonOptions) => {
+                return { ...defaultOptions, ...buttonOptions };
+              }) ?? [],
           };
         })
         .catch((err) => getLogger(name).error(err));
@@ -141,6 +142,8 @@
               if (localConfig.value?.buttons) {
                 localConfig.value.buttons.push(getDefaultOptions());
                 listItems.value = localConfig.value.buttons.map(createListItem);
+              } else {
+                getLogger(name).error('no local config available');
               }
             },
           },
