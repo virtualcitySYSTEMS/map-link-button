@@ -75,6 +75,7 @@
         .getConfig()
         .then((config: LinkButtonConfig) => {
           localConfig.value = {
+            ...config,
             buttons:
               config.buttons?.map((buttonOptions) => {
                 return { ...defaultOptions, ...buttonOptions };

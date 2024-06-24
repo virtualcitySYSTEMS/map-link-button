@@ -5,6 +5,7 @@ import {
   VcsAction,
   vuetify,
   ButtonLocation,
+  NotificationType,
 } from '@vcmap/ui';
 import { Component } from 'vue';
 import { name, version, mapVersion } from '../package.json';
@@ -46,46 +47,55 @@ export default function linkButton(
       config.buttons?.forEach((button, index) => {
         // cast because missing values were filled with defaults
         const buttonConfig = button as Required<LinkButton>;
-        let { icon } = buttonConfig;
-        const containsDotOrColon = /:|\./;
 
-        if (containsDotOrColon.test(buttonConfig.icon)) {
-          vuetify.framework.icons.values[`${name}${index}`] = {
-            component: CustomIcon,
-            props: {
-              icon: buttonConfig.icon,
-              maxSize:
-                buttonConfig.buttonLocation === ButtonLocation.MENU
-                  ? '16px'
-                  : '20px',
+        if (vcsUiApp.navbarManager.has(buttonConfig.title)) {
+          vcsUiApp.notifier.add({
+            title: `${name}`,
+            type: NotificationType.WARNING,
+            message: 'linkButton.warning.buttonExistsAlready',
+          });
+        } else {
+          let { icon } = buttonConfig;
+          const containsDotOrColon = /:|\./;
+
+          if (containsDotOrColon.test(buttonConfig.icon)) {
+            vuetify.framework.icons.values[`${name}${index}`] = {
+              component: CustomIcon,
+              props: {
+                icon: buttonConfig.icon,
+                maxSize:
+                  buttonConfig.buttonLocation === ButtonLocation.MENU
+                    ? '16px'
+                    : '20px',
+              },
+            };
+            icon = `$${name}${index}`;
+          }
+
+          const action: VcsAction = {
+            name: buttonConfig.title,
+            title: buttonConfig.title,
+            icon,
+            active: false,
+            async callback() {
+              const compoundUrl = await createUrl(
+                vcsUiApp,
+                buttonConfig.templateUrl,
+                buttonConfig.projection,
+              );
+              openUrl(compoundUrl);
             },
           };
-          icon = `$${name}${index}`;
+
+          vcsUiApp.navbarManager.add(
+            {
+              id: buttonConfig.title,
+              action,
+            },
+            name,
+            buttonConfig.buttonLocation,
+          );
         }
-
-        const action: VcsAction = {
-          name: buttonConfig.title,
-          title: buttonConfig.title,
-          icon,
-          active: false,
-          async callback() {
-            const compoundUrl = await createUrl(
-              vcsUiApp,
-              buttonConfig.templateUrl,
-              buttonConfig.projection,
-            );
-            openUrl(compoundUrl);
-          },
-        };
-
-        vcsUiApp.navbarManager.add(
-          {
-            id: buttonConfig.title,
-            action,
-          },
-          name,
-          buttonConfig.buttonLocation,
-        );
       });
 
       return Promise.resolve();
@@ -141,6 +151,10 @@ export default function linkButton(
     i18n: {
       en: {
         linkButton: {
+          warning: {
+            buttonExistsAlready:
+              'A button with this title has already been added',
+          },
           editor: {
             templateUrl: 'Template URL',
             title: 'Title',
@@ -158,6 +172,10 @@ export default function linkButton(
       },
       de: {
         linkButton: {
+          warning: {
+            buttonExistsAlready:
+              'Ein Button mit diesem Titel wurde bereits hinzugefügt',
+          },
           editor: {
             templateUrl: 'Template URL',
             title: 'Titel',
