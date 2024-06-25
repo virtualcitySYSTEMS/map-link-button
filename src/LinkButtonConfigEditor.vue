@@ -15,9 +15,7 @@
         v-if="buttonOptions"
         :value="true"
         width="400"
-        @click:outside="buttonOptions = undefined"
-        @keydown.esc="buttonOptions = undefined"
-        @keydown.enter="buttonOptions = undefined"
+        :persistent="true"
       >
         <ButtonEditor
           v-model="buttonOptions"
@@ -38,6 +36,7 @@
   import { getLogger } from '@vcsuite/logger';
   import { PropType, Ref, computed, defineComponent, ref, watch } from 'vue';
   import { VDialog } from 'vuetify/lib';
+  import { v4 as uuid } from 'uuid';
   import getDefaultOptions, {
     LinkButton,
     LinkButtonConfig,
@@ -92,9 +91,13 @@
         buttonConfig: LinkButton,
         index: number,
       ): VcsListItem {
+        const infoComplete =
+          buttonConfig.title && buttonConfig.templateUrl && buttonConfig.icon;
         return {
-          name: `item-${index}-${buttonConfig.title}`,
+          name: uuid(),
           title: buttonConfig.title || '',
+          icon: infoComplete ? undefined : 'mdi-alert',
+          tooltip: infoComplete ? undefined : 'linkButton.editor.infoMissing',
           // icon could be added but only for mdi or vcs icons
           actions: [
             {

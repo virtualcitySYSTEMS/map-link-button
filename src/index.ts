@@ -5,9 +5,9 @@ import {
   VcsAction,
   vuetify,
   ButtonLocation,
-  NotificationType,
 } from '@vcmap/ui';
 import { Component } from 'vue';
+import { v4 as uuid } from 'uuid';
 import { name, version, mapVersion } from '../package.json';
 import getDefaultOptions, {
   LinkButton,
@@ -48,54 +48,46 @@ export default function linkButton(
         // cast because missing values were filled with defaults
         const buttonConfig = button as Required<LinkButton>;
 
-        if (vcsUiApp.navbarManager.has(buttonConfig.title)) {
-          vcsUiApp.notifier.add({
-            title: `${name}`,
-            type: NotificationType.WARNING,
-            message: 'linkButton.warning.buttonExistsAlready',
-          });
-        } else {
-          let { icon } = buttonConfig;
-          const containsDotOrColon = /:|\./;
+        let { icon } = buttonConfig;
+        const containsDotOrColon = /:|\./;
 
-          if (containsDotOrColon.test(buttonConfig.icon)) {
-            vuetify.framework.icons.values[`${name}${index}`] = {
-              component: CustomIcon,
-              props: {
-                icon: buttonConfig.icon,
-                maxSize:
-                  buttonConfig.buttonLocation === ButtonLocation.MENU
-                    ? '16px'
-                    : '20px',
-              },
-            };
-            icon = `$${name}${index}`;
-          }
-
-          const action: VcsAction = {
-            name: buttonConfig.title,
-            title: buttonConfig.title,
-            icon,
-            active: false,
-            async callback() {
-              const compoundUrl = await createUrl(
-                vcsUiApp,
-                buttonConfig.templateUrl,
-                buttonConfig.projection,
-              );
-              openUrl(compoundUrl);
+        if (containsDotOrColon.test(buttonConfig.icon)) {
+          vuetify.framework.icons.values[`${name}${index}`] = {
+            component: CustomIcon,
+            props: {
+              icon: buttonConfig.icon,
+              maxSize:
+                buttonConfig.buttonLocation === ButtonLocation.MENU
+                  ? '16px'
+                  : '20px',
             },
           };
-
-          vcsUiApp.navbarManager.add(
-            {
-              id: buttonConfig.title,
-              action,
-            },
-            name,
-            buttonConfig.buttonLocation,
-          );
+          icon = `$${name}${index}`;
         }
+
+        const action: VcsAction = {
+          name: uuid(),
+          title: buttonConfig.title,
+          icon,
+          active: false,
+          async callback() {
+            const compoundUrl = await createUrl(
+              vcsUiApp,
+              buttonConfig.templateUrl,
+              buttonConfig.projection,
+            );
+            openUrl(compoundUrl);
+          },
+        };
+
+        vcsUiApp.navbarManager.add(
+          {
+            id: action.name,
+            action,
+          },
+          name,
+          buttonConfig.buttonLocation,
+        );
       });
 
       return Promise.resolve();
@@ -167,6 +159,7 @@ export default function linkButton(
             proj4Placeholder: '+proj=longlat +datum=WGS84 +no_defs +type=crs',
             buttons: 'Buttons',
             buttonEditor: 'Button Editor',
+            infoMissing: 'Required configuration missing',
           },
         },
       },
@@ -188,6 +181,7 @@ export default function linkButton(
             proj4Placeholder: '+proj=longlat +datum=WGS84 +no_defs +type=crs',
             buttons: 'Buttons',
             buttonEditor: 'Button Editor',
+            infoMissing: 'Erforderliche Konfiguration fehlt',
           },
         },
       },

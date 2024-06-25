@@ -1,3 +1,7 @@
+# v1.0.4
+
+- Remove previously added notification for duplicate title and move input validation to config editor.
+
 # v1.0.3
 
 - Fixes bug where the `LinkButtonConfigEditor` created an invalid config, since name was missing.

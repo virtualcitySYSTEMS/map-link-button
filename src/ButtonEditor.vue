@@ -4,89 +4,103 @@
       heading="linkButton.editor.buttonEditor"
       :header-actions="headerActions"
     >
-      <v-container class="px-2 pt-0 pb-2">
-        <v-row no-gutters>
-          <v-col cols="6">
-            <VcsLabel html-for="link-button-url" :required="true">
-              {{ $t('linkButton.editor.templateUrl') }}
-            </VcsLabel>
-          </v-col>
-          <v-col cols="6">
-            <VcsTextArea
-              id="link-button-url"
-              rows="2"
-              :placeholder="'https://new.virtualcitymap.de/?state=[[[\u007B\u007BcameraPosition\u007D\u007D],[\u007B\u007BgroundPosition\u007D\u007D],\u007B\u007Bdistance\u007D\u007D,\u007B\u007Bheading\u007D\u007D,\u007B\u007Bpitch\u007D\u007D,\u007B\u007Broll\u007D\u007D],\u0022;cesium\u0022,[\u0022VC Map Demo\u0022]]'"
-              v-model="templateUrl"
-              :rules="[requiredRule]"
-            />
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="6">
-            <VcsLabel html-for="link-button-title">
-              {{ $t('linkButton.editor.title') }}
-            </VcsLabel>
-          </v-col>
-          <v-col cols="6">
-            <VcsTextField
-              id="link-button-title"
-              :placeholder="$t('linkButton.editor.titlePlaceholder')"
-              v-model="title"
-            />
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="6">
-            <VcsLabel html-for="link-button-icon">
-              {{ $t('linkButton.editor.icon') }}
-            </VcsLabel>
-          </v-col>
-          <v-col cols="6">
-            <VcsTextField
-              id="link-button-icon"
-              :placeholder="$t('linkButton.editor.iconPlaceholder')"
-              v-model="icon"
-            />
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="6">
-            <VcsLabel html-for="link-button-buttonLocation">
-              {{ $t('linkButton.editor.buttonLocation') }}
-            </VcsLabel>
-          </v-col>
-          <v-col cols="6">
-            <VcsSelect
-              id="link-button-buttonLocation"
-              :items="availableButtonLocations"
-              v-model="buttonLocation"
-            />
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="6">
-            <VcsLabel html-for="link-button-epsg">
-              {{ $t('linkButton.editor.projection') }}
-            </VcsLabel>
-          </v-col>
-          <v-col cols="6">
-            <VcsTextField
-              id="link-button-epsg"
-              :placeholder="$t('linkButton.editor.epsgPlaceholder')"
-              v-model="epsg"
-            />
-          </v-col>
-        </v-row>
-        <v-row no-gutters class="justify-end">
-          <v-col cols="6">
-            <VcsTextField
-              id="link-button-proj4"
-              :placeholder="$t('linkButton.editor.proj4Placeholder')"
-              v-model="proj4"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-form ref="validationForm" v-model="isValid">
+        <v-container class="px-2 pt-0 pb-2">
+          <v-row no-gutters>
+            <v-col cols="6">
+              <VcsLabel html-for="link-button-url" :required="true">
+                {{ $t('linkButton.editor.templateUrl') }}
+              </VcsLabel>
+            </v-col>
+            <v-col cols="6">
+              <VcsTextArea
+                id="link-button-url"
+                rows="2"
+                :placeholder="'https://new.virtualcitymap.de/?state=[[[\u007B\u007BcameraPosition\u007D\u007D],[\u007B\u007BgroundPosition\u007D\u007D],\u007B\u007Bdistance\u007D\u007D,\u007B\u007Bheading\u007D\u007D,\u007B\u007Bpitch\u007D\u007D,\u007B\u007Broll\u007D\u007D],\u0022;cesium\u0022,[\u0022VC Map Demo\u0022]]'"
+                v-model="templateUrl"
+                :rules="[requiredRule]"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="6">
+              <VcsLabel html-for="link-button-title" :required="true">
+                {{ $t('linkButton.editor.title') }}
+              </VcsLabel>
+            </v-col>
+            <v-col cols="6">
+              <VcsTextField
+                id="link-button-title"
+                :placeholder="$t('linkButton.editor.titlePlaceholder')"
+                v-model="title"
+                :rules="[requiredRule]"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="6">
+              <VcsLabel html-for="link-button-icon" :required="true">
+                {{ $t('linkButton.editor.icon') }}
+              </VcsLabel>
+            </v-col>
+            <v-col cols="6">
+              <VcsTextField
+                id="link-button-icon"
+                :placeholder="$t('linkButton.editor.iconPlaceholder')"
+                v-model="icon"
+                :rules="[requiredRule]"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="6">
+              <VcsLabel html-for="link-button-buttonLocation">
+                {{ $t('linkButton.editor.buttonLocation') }}
+              </VcsLabel>
+            </v-col>
+            <v-col cols="6">
+              <VcsSelect
+                id="link-button-buttonLocation"
+                :items="availableButtonLocations"
+                v-model="buttonLocation"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="6">
+              <VcsLabel html-for="link-button-epsg">
+                {{ $t('linkButton.editor.projection') }}
+              </VcsLabel>
+            </v-col>
+            <v-col cols="6">
+              <VcsTextField
+                id="link-button-epsg"
+                :placeholder="$t('linkButton.editor.epsgPlaceholder')"
+                v-model="epsg"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters class="justify-end">
+            <v-col cols="6">
+              <VcsTextField
+                id="link-button-proj4"
+                :placeholder="$t('linkButton.editor.proj4Placeholder')"
+                v-model="proj4"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
+      <v-divider />
+      <div class="d-flex justify-end pa-2">
+        <VcsFormButton
+          @click="$emit('close')"
+          variant="filled"
+          :disabled="!isValid"
+        >
+          {{ $t('components.apply') }}
+        </VcsFormButton>
+      </div>
     </VcsFormSection>
   </v-card>
 </template>
@@ -99,10 +113,11 @@
     VcsTextField,
     ButtonLocation,
     VcsFormSection,
+    VcsFormButton,
   } from '@vcmap/ui';
-  import { computed, defineComponent } from 'vue';
+  import { computed, defineComponent, onMounted, ref } from 'vue';
   import type { PropType } from 'vue';
-  import { VCol, VContainer, VRow, VCard } from 'vuetify/lib';
+  import { VCol, VContainer, VRow, VCard, VDivider, VForm } from 'vuetify/lib';
   import { LinkButton } from './defaultOptions.js';
 
   export default defineComponent({
@@ -118,6 +133,9 @@
       VCol,
       VCard,
       VcsFormSection,
+      VDivider,
+      VcsFormButton,
+      VForm,
     },
     props: {
       value: {
@@ -136,6 +154,12 @@
           text: 'MENU',
         },
       ];
+      const validationForm = ref<HTMLFormElement>();
+
+      onMounted(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        validationForm.value?.validate();
+      });
 
       return {
         buttonLocation: computed({
@@ -201,8 +225,8 @@
         availableButtonLocations,
         headerActions: [
           {
-            name: 'linkButton.editor.close',
-            title: 'linkButton.editor.close',
+            name: 'components.close',
+            title: 'components.close',
             icon: 'mdi-close-thick',
             callback(): void {
               emit('close');
@@ -211,6 +235,8 @@
         ],
         requiredRule: (v: string | undefined): boolean | string =>
           !!v || 'components.validation.required',
+        isValid: ref(true),
+        validationForm,
       };
     },
   });

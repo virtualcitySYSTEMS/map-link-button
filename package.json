@@ -51,6 +51,7 @@
     "vuetify": "~2.6.7"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.1",
     "@vcmap/plugin-cli": "^3.1.1",
     "@vcsuite/eslint-config": "^3.0.7",
     "@vitest/coverage-v8": "^1.5.1",
@@ -62,7 +63,8 @@
     "vue-tsc": "^2.0.14"
   },
   "dependencies": {
-    "@vcsuite/logger": "^1.0.1"
+    "@vcsuite/logger": "^1.0.1",
+    "uuid": "^9.0.1"
   },
   "mapVersion": "^5.2"
 }
