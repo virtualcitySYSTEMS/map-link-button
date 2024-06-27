@@ -95,10 +95,9 @@
           buttonConfig.title && buttonConfig.templateUrl && buttonConfig.icon;
         return {
           name: uuid(),
-          title: buttonConfig.title || '',
+          title: buttonConfig.title || 'linkButton.editor.titleMissing',
           icon: infoComplete ? undefined : 'mdi-alert',
           tooltip: infoComplete ? undefined : 'linkButton.editor.infoMissing',
-          // icon could be added but only for mdi or vcs icons
           actions: [
             {
               name: 'linkButton.editor.edit',

@@ -1,3 +1,8 @@
+# v1.0.5
+
+- Fixes bug where uuid was displayed as name
+- Fixes bug where only single changes in buttonEditor were possible
+
 # v1.0.4
 
 - Remove previously added notification for duplicate title and move input validation to config editor.

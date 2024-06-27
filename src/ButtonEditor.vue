@@ -17,7 +17,7 @@
                 id="link-button-url"
                 rows="2"
                 :placeholder="'https://new.virtualcitymap.de/?state=[[[\u007B\u007BcameraPosition\u007D\u007D],[\u007B\u007BgroundPosition\u007D\u007D],\u007B\u007Bdistance\u007D\u007D,\u007B\u007Bheading\u007D\u007D,\u007B\u007Bpitch\u007D\u007D,\u007B\u007Broll\u007D\u007D],\u0022;cesium\u0022,[\u0022VC Map Demo\u0022]]'"
-                v-model="templateUrl"
+                v-model="localLinkButtonOptions.templateUrl"
                 :rules="[requiredRule]"
               />
             </v-col>
@@ -32,7 +32,7 @@
               <VcsTextField
                 id="link-button-title"
                 :placeholder="$t('linkButton.editor.titlePlaceholder')"
-                v-model="title"
+                v-model="localLinkButtonOptions.title"
                 :rules="[requiredRule]"
               />
             </v-col>
@@ -47,7 +47,7 @@
               <VcsTextField
                 id="link-button-icon"
                 :placeholder="$t('linkButton.editor.iconPlaceholder')"
-                v-model="icon"
+                v-model="localLinkButtonOptions.icon"
                 :rules="[requiredRule]"
               />
             </v-col>
@@ -62,7 +62,7 @@
               <VcsSelect
                 id="link-button-buttonLocation"
                 :items="availableButtonLocations"
-                v-model="buttonLocation"
+                v-model="localLinkButtonOptions.buttonLocation"
               />
             </v-col>
           </v-row>
@@ -94,7 +94,12 @@
       <v-divider />
       <div class="d-flex justify-end pa-2">
         <VcsFormButton
-          @click="$emit('close')"
+          @click="
+            () => {
+              $emit('input', localLinkButtonOptions);
+              $emit('close');
+            }
+          "
           variant="filled"
           :disabled="!isValid"
         >
@@ -156,69 +161,35 @@
       ];
       const validationForm = ref<HTMLFormElement>();
 
+      const localLinkButtonOptions = ref(structuredClone(props.value));
+
       onMounted(() => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         validationForm.value?.validate();
       });
 
       return {
-        buttonLocation: computed({
-          get(): ButtonLocation {
-            return props.value.buttonLocation;
-          },
-          set(value: ButtonLocation) {
-            const options = structuredClone(props.value);
-            emit('input', { ...options, buttonLocation: value });
-          },
-        }),
-        templateUrl: computed({
-          get(): string {
-            return props.value.templateUrl;
-          },
-          set(value: string) {
-            const options = structuredClone(props.value);
-            emit('input', { ...options, templateUrl: value });
-          },
-        }),
-        title: computed({
-          get(): string {
-            return props.value.title;
-          },
-          set(value: string) {
-            const options = structuredClone(props.value);
-            emit('input', { ...options, title: value });
-          },
-        }),
-        icon: computed({
-          get(): string {
-            return props.value.icon;
-          },
-          set(value: string) {
-            const options = structuredClone(props.value);
-            emit('input', { ...options, icon: value });
-          },
-        }),
         epsg: computed({
           get(): string | number | undefined {
             return props.value.projection?.epsg;
           },
           set(value: string | undefined | number) {
-            if (props.value.projection) {
-              const options = structuredClone(props.value);
-              options.projection.epsg = value;
-              emit('input', options);
+            if (localLinkButtonOptions.value.projection) {
+              localLinkButtonOptions.value.projection.epsg = value;
+            } else {
+              localLinkButtonOptions.value.projection = { epsg: value };
             }
           },
         }),
         proj4: computed({
           get(): string | undefined {
-            return props.value.projection?.proj4;
+            return localLinkButtonOptions.value.projection?.proj4;
           },
           set(value: string | undefined) {
-            if (props.value.projection) {
-              const options = structuredClone(props.value);
-              options.projection.proj4 = value;
-              emit('input', options);
+            if (localLinkButtonOptions.value.projection) {
+              localLinkButtonOptions.value.projection.proj4 = value;
+            } else {
+              localLinkButtonOptions.value.projection = { proj4: value };
             }
           },
         }),
@@ -237,6 +208,7 @@
           !!v || 'components.validation.required',
         isValid: ref(true),
         validationForm,
+        localLinkButtonOptions,
       };
     },
   });

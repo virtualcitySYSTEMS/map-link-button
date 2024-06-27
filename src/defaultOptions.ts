@@ -17,7 +17,7 @@ export default function getDefaultOptions(): Required<LinkButton> {
   return {
     buttonLocation: ButtonLocation.TOOL,
     templateUrl: '',
-    title: 'Open external link',
+    title: '',
     icon: '$vcsExternalLink',
     projection: {},
   };
