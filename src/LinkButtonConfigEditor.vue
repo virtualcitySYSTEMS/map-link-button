@@ -13,7 +13,7 @@
       <VcsList :items="listItems" :show-title="false" />
       <v-dialog
         v-if="buttonOptions"
-        :value="true"
+        :model-value="true"
         width="400"
         :persistent="true"
       >
@@ -35,7 +35,7 @@
   } from '@vcmap/ui';
   import { getLogger } from '@vcsuite/logger';
   import { PropType, Ref, computed, defineComponent, ref, watch } from 'vue';
-  import { VDialog } from 'vuetify/lib';
+  import { VDialog } from 'vuetify/components';
   import { v4 as uuid } from 'uuid';
   import getDefaultOptions, {
     LinkButton,

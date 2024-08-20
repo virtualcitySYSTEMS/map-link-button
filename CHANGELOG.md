@@ -1,3 +1,7 @@
+# v2.0.0
+
+- update @vcmap/core and @vcmap/ui to 6.x
+
 # v1.0.5
 
 - Fixes bug where uuid was displayed as name

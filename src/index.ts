@@ -1,13 +1,7 @@
-import {
-  VcsPlugin,
-  VcsUiApp,
-  PluginConfigEditor,
-  VcsAction,
-  vuetify,
-  ButtonLocation,
-} from '@vcmap/ui';
-import { Component } from 'vue';
+import { VcsPlugin, VcsUiApp, PluginConfigEditor, VcsAction } from '@vcmap/ui';
+import { Component, h } from 'vue';
 import { getLogger } from '@vcsuite/logger';
+import { IconProps, IconSet } from 'vuetify';
 import { name, version, mapVersion } from '../package.json';
 import getDefaultOptions, {
   LinkButton,
@@ -15,11 +9,24 @@ import getDefaultOptions, {
 } from './defaultOptions.js';
 import { createUrl, openUrl } from './urlHelper.js';
 import LinkButtonConfigEditor from './LinkButtonConfigEditor.vue';
-import CustomIcon from './CustomIcon.vue';
 
 type PluginState = Record<never, never>;
 
 type LinkButtonPlugin = VcsPlugin<LinkButtonConfig, PluginState>;
+
+function createImageIconSet(): IconSet {
+  return {
+    component: (props: IconProps) =>
+      h(
+        props.tag,
+        h('img', {
+          src: props.icon,
+          alt: 'link button icon',
+          style: { width: 'auto', height: '100%' },
+        }),
+      ),
+  };
+}
 
 export default function linkButton(
   options: LinkButtonConfig,
@@ -32,6 +39,7 @@ export default function linkButton(
         return { ...structuredClone(defaultOptions), ...buttonOptions };
       }),
   };
+  let app: VcsUiApp;
 
   return {
     get name(): string {
@@ -44,7 +52,10 @@ export default function linkButton(
       return mapVersion;
     },
     initialize(vcsUiApp: VcsUiApp): Promise<void> {
-      config.buttons?.forEach((button, index) => {
+      app = vcsUiApp;
+      vcsUiApp.vuetify.icons.sets.linkButton = createImageIconSet();
+
+      config.buttons?.forEach((button) => {
         // cast because missing values were filled with defaults
         const buttonConfig = button as Required<LinkButton>;
 
@@ -57,17 +68,7 @@ export default function linkButton(
           const containsDotOrColon = /:|\./;
 
           if (containsDotOrColon.test(buttonConfig.icon)) {
-            vuetify.framework.icons.values[`${name}${index}`] = {
-              component: CustomIcon,
-              props: {
-                icon: buttonConfig.icon,
-                maxSize:
-                  buttonConfig.buttonLocation === ButtonLocation.MENU
-                    ? '16px'
-                    : '20px',
-              },
-            };
-            icon = `$${name}${index}`;
+            icon = `linkButton:${icon}`;
           }
 
           const action: VcsAction = {
@@ -135,16 +136,16 @@ export default function linkButton(
      */
     getConfigEditors(): PluginConfigEditor[] {
       return [
-        { component: LinkButtonConfigEditor as Component & { title: string } },
+        {
+          component: LinkButtonConfigEditor as Component,
+          infoUrlCallback: app.getHelpUrlCallback(
+            '/components/plugins/linkButtonConfig.html',
+          ),
+        },
       ];
     },
     destroy(): void {
-      config.buttons?.forEach((button, index) => {
-        const containsDotOrColon = /:|\./;
-        if (button.icon && containsDotOrColon.test(button.icon)) {
-          delete vuetify.framework.icons.values[`${name}${index}`];
-        }
-      });
+      delete app.vuetify.icons.sets.linkButton;
     },
     i18n: {
       en: {

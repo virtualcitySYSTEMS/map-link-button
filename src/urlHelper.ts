@@ -6,7 +6,7 @@ import {
   ProjectionOptions,
   wgs84Projection,
 } from '@vcmap/core';
-import { VcsUiApp, replaceAttributes } from '@vcmap/ui';
+import { VcsUiApp, renderTemplate } from '@vcmap/ui';
 import { getLogger } from '@vcsuite/logger';
 import { name } from '../package.json';
 
@@ -140,7 +140,7 @@ export async function createUrl(
       ];
     }
   }
-  const url = replaceAttributes(templateUrl, {
+  const url = renderTemplate(templateUrl, {
     groundPosition,
     cameraPosition,
     distance,

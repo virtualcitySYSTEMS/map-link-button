@@ -96,7 +96,7 @@
         <VcsFormButton
           @click="
             () => {
-              $emit('input', localLinkButtonOptions);
+              $emit('update:modelValue', localLinkButtonOptions);
               $emit('close');
             }
           "
@@ -120,10 +120,17 @@
     VcsFormSection,
     VcsFormButton,
   } from '@vcmap/ui';
-  import { computed, defineComponent, onMounted, ref } from 'vue';
+  import { computed, defineComponent, onMounted, ref, toRaw } from 'vue';
   import type { PropType } from 'vue';
-  import { VCol, VContainer, VRow, VCard, VDivider, VForm } from 'vuetify/lib';
-  import { LinkButton } from './defaultOptions.js';
+  import {
+    VCol,
+    VContainer,
+    VRow,
+    VCard,
+    VDivider,
+    VForm,
+  } from 'vuetify/components';
+  import type { LinkButton } from './defaultOptions.js';
 
   export default defineComponent({
     name: 'ButtonEditor',
@@ -143,7 +150,7 @@
       VForm,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object as PropType<Required<LinkButton>>,
         required: true,
       },
@@ -152,16 +159,18 @@
       const availableButtonLocations = [
         {
           value: ButtonLocation.TOOL,
-          text: 'TOOL',
+          title: 'TOOL',
         },
         {
           value: ButtonLocation.MENU,
-          text: 'MENU',
+          title: 'MENU',
         },
       ];
       const validationForm = ref<HTMLFormElement>();
 
-      const localLinkButtonOptions = ref(structuredClone(props.value));
+      const localLinkButtonOptions = ref(
+        structuredClone(toRaw(props.modelValue)),
+      );
 
       onMounted(() => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -171,7 +180,7 @@
       return {
         epsg: computed({
           get(): string | number | undefined {
-            return props.value.projection?.epsg;
+            return localLinkButtonOptions.value.projection?.epsg;
           },
           set(value: string | undefined | number) {
             if (localLinkButtonOptions.value.projection) {
