@@ -1,7 +1,6 @@
 import { VcsPlugin, VcsUiApp, PluginConfigEditor, VcsAction } from '@vcmap/ui';
-import { Component, h } from 'vue';
+import { Component } from 'vue';
 import { getLogger } from '@vcsuite/logger';
-import { IconProps, IconSet } from 'vuetify';
 import { name, version, mapVersion } from '../package.json';
 import getDefaultOptions, {
   LinkButton,
@@ -13,20 +12,6 @@ import LinkButtonConfigEditor from './LinkButtonConfigEditor.vue';
 type PluginState = Record<never, never>;
 
 type LinkButtonPlugin = VcsPlugin<LinkButtonConfig, PluginState>;
-
-function createImageIconSet(): IconSet {
-  return {
-    component: (props: IconProps) =>
-      h(
-        props.tag,
-        h('img', {
-          src: props.icon,
-          alt: 'link button icon',
-          style: { width: 'auto', height: '100%' },
-        }),
-      ),
-  };
-}
 
 export default function linkButton(
   options: LinkButtonConfig,
@@ -53,7 +38,6 @@ export default function linkButton(
     },
     initialize(vcsUiApp: VcsUiApp): Promise<void> {
       app = vcsUiApp;
-      vcsUiApp.vuetify.icons.sets.linkButton = createImageIconSet();
 
       config.buttons?.forEach((button) => {
         // cast because missing values were filled with defaults
@@ -68,7 +52,7 @@ export default function linkButton(
           const containsDotOrColon = /:|\./;
 
           if (containsDotOrColon.test(buttonConfig.icon)) {
-            icon = `linkButton:${icon}`;
+            icon = `imageUrl:${icon}`;
           }
 
           const action: VcsAction = {
@@ -134,7 +118,7 @@ export default function linkButton(
     /**
      * components for configuring the plugin and/ or custom items defined by the plugin
      */
-    getConfigEditors(): PluginConfigEditor[] {
+    getConfigEditors(): PluginConfigEditor<LinkButtonConfig>[] {
       return [
         {
           component: LinkButtonConfigEditor as Component,

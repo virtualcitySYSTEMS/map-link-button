@@ -1,6 +1,7 @@
 # v2.0.0
 
 - update @vcmap/core and @vcmap/ui to 6.x
+- use new custom icon functionality
 
 # v1.0.5
 
