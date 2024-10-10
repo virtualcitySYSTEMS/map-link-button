@@ -56,7 +56,7 @@
     },
     props: {
       getConfig: {
-        type: Function as PropType<() => Promise<LinkButtonConfig>>,
+        type: Function as PropType<() => LinkButtonConfig>,
         required: true,
       },
       setConfig: {
@@ -68,20 +68,15 @@
       const editButtonAtIndex: Ref<number | undefined> = ref();
       const listItems: Ref<VcsListItem[]> = ref([]);
 
-      const localConfig: Ref<LinkButtonConfig | undefined> = ref(undefined);
+      const pluginConfig = props.getConfig();
       const defaultOptions = getDefaultOptions();
-      props
-        .getConfig()
-        .then((config: LinkButtonConfig) => {
-          localConfig.value = {
-            ...config,
-            buttons:
-              config.buttons?.map((buttonOptions) => {
-                return { ...defaultOptions, ...buttonOptions };
-              }) ?? [],
-          };
-        })
-        .catch((err) => getLogger(name).error(err));
+      const localConfig = ref({
+        ...pluginConfig,
+        buttons:
+          pluginConfig.buttons?.map((buttonOptions) => {
+            return { ...defaultOptions, ...buttonOptions };
+          }) ?? [],
+      });
 
       async function apply(): Promise<void> {
         await props.setConfig(localConfig.value);
