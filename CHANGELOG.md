@@ -1,7 +1,7 @@
 # v2.0.0
 
-- update @vcmap/core and @vcmap/ui to 6.x
-- use new custom icon functionality
+- updates @vcmap/core and @vcmap/ui to 6.x
+- uses new custom icon functionality
 
 # v1.0.5
 
@@ -10,12 +10,12 @@
 
 # v1.0.4
 
-- Remove previously added notification for duplicate title and move input validation to config editor.
+- Removes previously added notification for duplicate title and move input validation to config editor.
 
 # v1.0.3
 
 - Fixes bug where the `LinkButtonConfigEditor` created an invalid config, since name was missing.
-- Add Notification if button with same title already exists and therefore is not added.
+- Adds Notification if button with same title already exists and therefore is not added.
 
 # v1.0.2
 

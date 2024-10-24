@@ -1,5 +1,4 @@
 import { VcsPlugin, VcsUiApp, PluginConfigEditor, VcsAction } from '@vcmap/ui';
-import { Component } from 'vue';
 import { getLogger } from '@vcsuite/logger';
 import { name, version, mapVersion } from '../package.json';
 import getDefaultOptions, {
@@ -71,10 +70,7 @@ export default function linkButton(
           };
 
           vcsUiApp.navbarManager.add(
-            {
-              id: action.name,
-              action,
-            },
+            { id: action.name, action },
             name,
             buttonConfig.buttonLocation,
           );
@@ -121,9 +117,11 @@ export default function linkButton(
     getConfigEditors(): PluginConfigEditor<LinkButtonConfig>[] {
       return [
         {
-          component: LinkButtonConfigEditor as Component,
+          component: LinkButtonConfigEditor,
+          title: 'linkButton.editor.editorTitle',
           infoUrlCallback: app.getHelpUrlCallback(
             '/components/plugins/linkButtonConfig.html',
+            'app-configurator',
           ),
         },
       ];
@@ -139,6 +137,7 @@ export default function linkButton(
               'A button with this title has already been added',
           },
           editor: {
+            editorTitle: 'LinkButton Editor',
             templateUrl: 'Template URL',
             title: 'Title',
             titlePlaceholder: 'Title and tooltip of button',
@@ -162,6 +161,7 @@ export default function linkButton(
               'Ein Button mit diesem Titel wurde bereits hinzugefügt',
           },
           editor: {
+            editorTitle: 'LinkButton Editor',
             templateUrl: 'Template URL',
             title: 'Titel',
             titlePlaceholder: 'Titel und Tooltip des Buttons',

@@ -46,7 +46,6 @@
 
   export default defineComponent({
     name: 'LinkButtonConfigEditor',
-    title: 'LinkButton Editor',
     components: {
       AbstractConfigEditor,
       VcsFormSection,
@@ -60,7 +59,7 @@
         required: true,
       },
       setConfig: {
-        type: Function,
+        type: Function as PropType<(config: object | undefined) => void>,
         required: true,
       },
     },
@@ -78,8 +77,8 @@
           }) ?? [],
       });
 
-      async function apply(): Promise<void> {
-        await props.setConfig(localConfig.value);
+      function apply(): void {
+        props.setConfig(localConfig.value);
       }
 
       function createListItem(
