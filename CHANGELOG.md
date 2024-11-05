@@ -1,3 +1,7 @@
+# v2.0.1
+
+- Fix bug in config editor, where previously configured buttons could not be edited
+
 # v2.0.0
 
 - updates @vcmap/core and @vcmap/ui to 6.x

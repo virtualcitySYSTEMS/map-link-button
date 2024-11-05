@@ -34,7 +34,15 @@
     VcsListItem,
   } from '@vcmap/ui';
   import { getLogger } from '@vcsuite/logger';
-  import { PropType, Ref, computed, defineComponent, ref, watch } from 'vue';
+  import {
+    PropType,
+    Ref,
+    computed,
+    defineComponent,
+    ref,
+    watch,
+    toRaw,
+  } from 'vue';
   import { VDialog } from 'vuetify/components';
   import { v4 as uuid } from 'uuid';
   import getDefaultOptions, {
@@ -78,7 +86,10 @@
       });
 
       function apply(): void {
-        props.setConfig(localConfig.value);
+        const buttons = localConfig.value.buttons?.map((buttonOptions) =>
+          toRaw(buttonOptions),
+        );
+        props.setConfig({ ...pluginConfig, buttons });
       }
 
       function createListItem(
@@ -106,8 +117,6 @@
               callback(): void {
                 if (localConfig.value?.buttons) {
                   localConfig.value.buttons.splice(index, 1);
-                  listItems.value =
-                    localConfig.value?.buttons?.map(createListItem);
                 }
               },
             },
@@ -124,7 +133,7 @@
             listItems.value = [];
           }
         },
-        { immediate: true },
+        { immediate: true, deep: true },
       );
 
       return {
@@ -162,7 +171,6 @@
               localConfig.value?.buttons
             ) {
               localConfig.value.buttons[editButtonAtIndex.value] = value;
-              listItems.value = localConfig.value.buttons.map(createListItem);
             } else {
               editButtonAtIndex.value = undefined;
             }
