@@ -96,14 +96,36 @@ export async function createUrl(
     if (canvas && distance && groundPosition) {
       extent = calculateExtentForCesium(canvas, distance, groundPosition);
     }
-  } else if (
-    (activeMap instanceof OpenlayersMap || activeMap instanceof ObliqueMap) &&
-    activeMap.olMap
-  ) {
-    const mercatorExtent = activeMap.olMap?.getView().calculateExtent();
+  } else if (activeMap instanceof OpenlayersMap && activeMap.olMap) {
+    const mercatorExtent = activeMap.olMap.getView().calculateExtent();
     extent = [
       ...Projection.mercatorToWgs84([mercatorExtent[0], mercatorExtent[1]]),
       ...Projection.mercatorToWgs84([mercatorExtent[2], mercatorExtent[3]]),
+    ];
+  } else if (
+    activeMap instanceof ObliqueMap &&
+    activeMap.olMap &&
+    activeMap.currentImage
+  ) {
+    const pixelExtent = activeMap.olMap.getView().calculateExtent();
+    const bottomLeft = activeMap.currentImage.transformImage2RealWorld([
+      pixelExtent[0],
+      pixelExtent[1],
+    ]);
+    const topRight = activeMap.currentImage.transformImage2RealWorld([
+      pixelExtent[2],
+      pixelExtent[3],
+    ]);
+    const { projection } = activeMap.currentImage.meta;
+    extent = [
+      ...Projection.transform(wgs84Projection, projection, bottomLeft).slice(
+        0,
+        2,
+      ),
+      ...Projection.transform(wgs84Projection, projection, topRight).slice(
+        0,
+        2,
+      ),
     ];
   }
 

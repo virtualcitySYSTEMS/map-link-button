@@ -1,3 +1,7 @@
+# v2.0.2
+
+- Fix bug, where returned extent in ObliqueMap was incorrect
+
 # v2.0.1
 
 - Fix bug in config editor, where previously configured buttons could not be edited
