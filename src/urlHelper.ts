@@ -1,12 +1,13 @@
+import type { ProjectionOptions } from '@vcmap/core';
 import {
   CesiumMap,
   ObliqueMap,
   OpenlayersMap,
   Projection,
-  ProjectionOptions,
   wgs84Projection,
 } from '@vcmap/core';
-import { VcsUiApp, renderTemplate } from '@vcmap/ui';
+import type { VcsUiApp } from '@vcmap/ui';
+import { renderTemplate } from '@vcmap/ui';
 import { getLogger } from '@vcsuite/logger';
 import { name } from '../package.json';
 

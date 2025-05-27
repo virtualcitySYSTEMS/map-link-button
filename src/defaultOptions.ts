@@ -1,4 +1,4 @@
-import { ProjectionOptions } from '@vcmap/core';
+import type { ProjectionOptions } from '@vcmap/core';
 import { ButtonLocation } from '@vcmap/ui';
 
 export type LinkButton = {

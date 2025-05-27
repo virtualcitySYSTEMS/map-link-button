@@ -15,9 +15,9 @@
             <v-col cols="6">
               <VcsTextArea
                 id="link-button-url"
+                v-model="localLinkButtonOptions.templateUrl"
                 rows="2"
                 :placeholder="'https://new.virtualcitymap.de/?state=[[[\u007B\u007BcameraPosition\u007D\u007D],[\u007B\u007BgroundPosition\u007D\u007D],\u007B\u007Bdistance\u007D\u007D,\u007B\u007Bheading\u007D\u007D,\u007B\u007Bpitch\u007D\u007D,\u007B\u007Broll\u007D\u007D],\u0022;cesium\u0022,[\u0022VC Map Demo\u0022]]'"
-                v-model="localLinkButtonOptions.templateUrl"
                 :rules="[requiredRule]"
               />
             </v-col>
@@ -31,8 +31,8 @@
             <v-col cols="6">
               <VcsTextField
                 id="link-button-title"
-                :placeholder="$t('linkButton.editor.titlePlaceholder')"
                 v-model="localLinkButtonOptions.title"
+                :placeholder="$t('linkButton.editor.titlePlaceholder')"
                 :rules="[requiredRule]"
               />
             </v-col>
@@ -46,8 +46,8 @@
             <v-col cols="6">
               <VcsTextField
                 id="link-button-icon"
-                :placeholder="$t('linkButton.editor.iconPlaceholder')"
                 v-model="localLinkButtonOptions.icon"
+                :placeholder="$t('linkButton.editor.iconPlaceholder')"
                 :rules="[requiredRule]"
               />
             </v-col>
@@ -61,8 +61,8 @@
             <v-col cols="6">
               <VcsSelect
                 id="link-button-buttonLocation"
-                :items="availableButtonLocations"
                 v-model="localLinkButtonOptions.buttonLocation"
+                :items="availableButtonLocations"
               />
             </v-col>
           </v-row>
@@ -75,8 +75,8 @@
             <v-col cols="6">
               <VcsTextField
                 id="link-button-epsg"
-                :placeholder="$t('linkButton.editor.epsgPlaceholder')"
                 v-model="epsg"
+                :placeholder="$t('linkButton.editor.epsgPlaceholder')"
               />
             </v-col>
           </v-row>
@@ -84,8 +84,8 @@
             <v-col cols="6">
               <VcsTextField
                 id="link-button-proj4"
-                :placeholder="$t('linkButton.editor.proj4Placeholder')"
                 v-model="proj4"
+                :placeholder="$t('linkButton.editor.proj4Placeholder')"
               />
             </v-col>
           </v-row>
@@ -94,14 +94,14 @@
       <v-divider />
       <div class="d-flex justify-end pa-2">
         <VcsFormButton
+          variant="filled"
+          :disabled="!isValid"
           @click="
             () => {
               $emit('update:modelValue', localLinkButtonOptions);
               $emit('close');
             }
           "
-          variant="filled"
-          :disabled="!isValid"
         >
           {{ $t('components.apply') }}
         </VcsFormButton>
@@ -155,6 +155,7 @@
         required: true,
       },
     },
+    emits: ['update:modelValue', 'close'],
     setup(props, { emit }) {
       const availableButtonLocations = [
         {
@@ -173,7 +174,6 @@
       );
 
       onMounted(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         validationForm.value?.validate();
       });
 

@@ -1,8 +1,8 @@
 <template>
   <AbstractConfigEditor
-    @submit="apply"
-    v-bind="{ ...$attrs, ...$props }"
     v-if="localConfig"
+    v-bind="{ ...$attrs, ...$props }"
+    @submit="apply"
   >
     <VcsFormSection
       heading="linkButton.editor.buttons"
@@ -27,28 +27,15 @@
 </template>
 
 <script lang="ts">
-  import {
-    AbstractConfigEditor,
-    VcsList,
-    VcsFormSection,
-    VcsListItem,
-  } from '@vcmap/ui';
+  import type { VcsListItem } from '@vcmap/ui';
+  import { AbstractConfigEditor, VcsList, VcsFormSection } from '@vcmap/ui';
   import { getLogger } from '@vcsuite/logger';
-  import {
-    PropType,
-    Ref,
-    computed,
-    defineComponent,
-    ref,
-    watch,
-    toRaw,
-  } from 'vue';
+  import type { PropType, Ref } from 'vue';
+  import { computed, defineComponent, ref, watch, toRaw } from 'vue';
   import { VDialog } from 'vuetify/components';
   import { v4 as uuid } from 'uuid';
-  import getDefaultOptions, {
-    LinkButton,
-    LinkButtonConfig,
-  } from './defaultOptions.js';
+  import type { LinkButton, LinkButtonConfig } from './defaultOptions.js';
+  import getDefaultOptions from './defaultOptions.js';
   import ButtonEditor from './ButtonEditor.vue';
   import { name } from '../package.json';
 

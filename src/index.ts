@@ -1,10 +1,13 @@
-import { VcsPlugin, VcsUiApp, PluginConfigEditor, VcsAction } from '@vcmap/ui';
+import type {
+  VcsPlugin,
+  VcsUiApp,
+  PluginConfigEditor,
+  VcsAction,
+} from '@vcmap/ui';
 import { getLogger } from '@vcsuite/logger';
 import { name, version, mapVersion } from '../package.json';
-import getDefaultOptions, {
-  LinkButton,
-  LinkButtonConfig,
-} from './defaultOptions.js';
+import type { LinkButton, LinkButtonConfig } from './defaultOptions.js';
+import getDefaultOptions from './defaultOptions.js';
 import { createUrl, openUrl } from './urlHelper.js';
 import LinkButtonConfigEditor from './LinkButtonConfigEditor.vue';
 
