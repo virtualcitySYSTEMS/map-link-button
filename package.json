@@ -1,6 +1,6 @@
 {
   "name": "@vcmap/link-button",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Adds a button to the UI that links to a URL with template strings for position parameters",
   "type": "module",
   "main": "dist/index.js",
