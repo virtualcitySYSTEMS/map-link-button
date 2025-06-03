@@ -1,3 +1,7 @@
+# v2.0.3
+
+- Added visibility option configuration
+
 # v2.0.2
 
 - Fix bug, where returned extent in ObliqueMap was incorrect

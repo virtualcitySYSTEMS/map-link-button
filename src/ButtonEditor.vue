@@ -89,6 +89,36 @@
               />
             </v-col>
           </v-row>
+          <v-row no-gutters>
+            <v-col cols="6">
+              <VcsLabel html-for="link-button-visibility">
+                {{ $t('linkButton.editor.visibility') }}
+              </VcsLabel>
+            </v-col>
+            <v-col cols="6">
+              <VcsCheckbox
+                id="link-button-visibility"
+                v-model="localLinkButtonOptions.visibility.mobile"
+                :label="$t('linkButton.editor.mobile')"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters class="justify-end">
+            <v-col cols="6">
+              <VcsCheckbox
+                v-model="localLinkButtonOptions.visibility.tablet"
+                :label="$t('linkButton.editor.tablet')"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters class="justify-end">
+            <v-col cols="6">
+              <VcsCheckbox
+                v-model="localLinkButtonOptions.visibility.desktop"
+                :label="$t('linkButton.editor.desktop')"
+              />
+            </v-col>
+          </v-row>
         </v-container>
       </v-form>
       <v-divider />
@@ -119,6 +149,7 @@
     ButtonLocation,
     VcsFormSection,
     VcsFormButton,
+    VcsCheckbox,
   } from '@vcmap/ui';
   import { computed, defineComponent, onMounted, ref, toRaw } from 'vue';
   import type { PropType } from 'vue';
@@ -144,6 +175,7 @@
       VRow,
       VCol,
       VCard,
+      VcsCheckbox,
       VcsFormSection,
       VDivider,
       VcsFormButton,
@@ -158,14 +190,8 @@
     emits: ['update:modelValue', 'close'],
     setup(props, { emit }) {
       const availableButtonLocations = [
-        {
-          value: ButtonLocation.TOOL,
-          title: 'TOOL',
-        },
-        {
-          value: ButtonLocation.MENU,
-          title: 'MENU',
-        },
+        { value: ButtonLocation.TOOL, title: 'TOOL' },
+        { value: ButtonLocation.MENU, title: 'MENU' },
       ];
       const validationForm = ref<HTMLFormElement>();
 

@@ -1,4 +1,5 @@
 import type { ProjectionOptions } from '@vcmap/core';
+import type { DeviceOptions } from '@vcmap/ui';
 import { ButtonLocation } from '@vcmap/ui';
 
 export type LinkButton = {
@@ -7,11 +8,10 @@ export type LinkButton = {
   title?: string;
   icon?: string;
   projection?: ProjectionOptions;
+  visibility?: DeviceOptions;
 };
 
-export type LinkButtonConfig = {
-  buttons?: LinkButton[];
-};
+export type LinkButtonConfig = { buttons?: LinkButton[] };
 
 export default function getDefaultOptions(): Required<LinkButton> {
   return {
@@ -20,5 +20,6 @@ export default function getDefaultOptions(): Required<LinkButton> {
     title: '',
     icon: '$vcsExternalLink',
     projection: {},
+    visibility: { mobile: true, tablet: true, desktop: true },
   };
 }

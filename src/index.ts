@@ -3,6 +3,7 @@ import type {
   VcsUiApp,
   PluginConfigEditor,
   VcsAction,
+  DeviceOptions,
 } from '@vcmap/ui';
 import { getLogger } from '@vcsuite/logger';
 import { name, version, mapVersion } from '../package.json';
@@ -76,6 +77,7 @@ export default function linkButton(
             { id: action.name, action },
             name,
             buttonConfig.buttonLocation,
+            buttonConfig.visibility,
           );
         }
       });
@@ -109,6 +111,18 @@ export default function linkButton(
         }
         if (button.projection) {
           configOptions.projection = button.projection;
+        }
+        if (button.visibility) {
+          const keys = (
+            Object.keys(button.visibility) as (keyof DeviceOptions)[]
+          ).filter(
+            (k) => button.visibility![k] !== defaultOptions.visibility[k],
+          );
+          if (keys.length) {
+            configOptions.visibility = Object.fromEntries(
+              keys.map((k) => [k, button.visibility![k]]),
+            ) as DeviceOptions;
+          }
         }
         return configOptions;
       });
@@ -154,6 +168,10 @@ export default function linkButton(
             buttonEditor: 'Button Editor',
             infoMissing: 'Required configuration missing',
             titleMissing: 'Button title is missing',
+            visibility: 'Visibility',
+            mobile: 'Mobile',
+            tablet: 'Tablet',
+            desktop: 'Desktop',
           },
         },
       },
@@ -178,6 +196,10 @@ export default function linkButton(
             buttonEditor: 'Button Editor',
             infoMissing: 'Erforderliche Konfiguration fehlt',
             titleMissing: 'Button Titel fehlt',
+            visibility: 'Sichtbarkeit',
+            mobile: 'Handy',
+            tablet: 'Tablet',
+            desktop: 'Desktop',
           },
         },
       },

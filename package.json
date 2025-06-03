@@ -45,29 +45,29 @@
   ],
   "prettier": "@vcsuite/eslint-config/prettier.js",
   "peerDependencies": {
-    "@vcmap/core": "^6.1.4",
-    "@vcmap/ui": "^6.1.4",
+    "@vcmap/core": "^6.1.9",
+    "@vcmap/ui": "^6.1.11",
     "vue": "~3.4.38",
-    "vuetify": "^3.7.18"
+    "vuetify": "~3.7.14"
   },
   "overrides": {
     "esbuild": "^0.25.0"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.1",
-    "@vcmap/plugin-cli": "^4.0.2",
+    "@vcmap/plugin-cli": "^4.1.1",
     "@vcsuite/eslint-config": "^4.0.0",
     "@vitest/coverage-v8": "^2.1.9",
     "jest-canvas-mock": "^2.5.2",
     "jsdom": "^24.0.0",
     "resize-observer-polyfill": "^1.5.1",
-    "typescript": "^5.8.2",
+    "typescript": "^5.8.3",
     "vitest": "^2.1.9",
-    "vue-tsc": "^2.2.8"
+    "vue-tsc": "^2.2.10"
   },
   "dependencies": {
     "@vcsuite/logger": "^1.0.1",
     "uuid": "^9.0.1"
   },
-  "mapVersion": "^6.0"
+  "mapVersion": "^6.1"
 }
